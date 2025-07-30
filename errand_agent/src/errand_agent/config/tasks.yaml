@@ -1,17 +1,43 @@
-research_task:
+information_extractor_task:
   description: >
-    Conduct a thorough research about {topic}
-    Make sure you find any interesting and relevant information given
-    the current year is {current_year}.
+    Engage with a customer to gather all the details for their errand request.
+    The customer's initial request is: '{customer_request}'.
+    Ask clarifying questions until you have all the required pieces of information.
+    Be friendly and professional throughout the conversation.
   expected_output: >
-    A list with 10 bullet points of the most relevant information about {topic}
-  agent: researcher
+    A complete list of all the gathered information:
+    - Item Description: [Details]
+    - Pickup Address: [Details]
+    - Delivery Address: [Details]
+    - Pickup Contact Name: [Details]
+    - Pickup Contact Phone: [Details]
+    - Recipient Name: [Details]
+    - Recipient Phone: [Details]
+    - Budget: [Details]
+  agent: information_extractor
 
-reporting_task:
+task_verify_and_brief:
   description: >
-    Review the context you got and expand each topic into a full section for a report.
-    Make sure the report is detailed and contains any and all relevant information.
+    Review the information collected from the customer.
+    Ensure that every required field is present and looks complete.
+    If any information is missing, you would normally send it back, but for now, assume it's complete.
+    Format the verified details into a structured 'Errand Brief
   expected_output: >
-    A fully fledged report with the main topics, each with a full section of information.
-    Formatted as markdown without '```'
-  agent: reporting_analyst
+    A final, structured 'Errand Brief' ready for dispatch.
+    The brief should be formatted clearly like this:
+
+    **New Errand Request**
+    -------------------------
+    **Item:** [Item Description]
+    **Pickup From:** [Pickup Address]
+    **Deliver To:** [Delivery Address]
+    **Client Contact:** [Pickup Contact Name] at [Pickup Contact Phone]
+    **Recipient Contact:** [Recipient Name] at [Recipient Phone]
+    **Budget:** [Budget]
+    -------------------------
+    **Status:** Verified. Ready for runner dispatch.""",
+  agent: errand_manager
+  context: [information_extractor_task] 
+ 
+  
+
